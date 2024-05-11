@@ -9,6 +9,9 @@ class MyUserModel extends MyUser {
     required super.name,
     required super.hasActiveCart,
   });
+  factory MyUserModel.empty() {
+    return MyUserModel(uid: '', email: '', name: '', hasActiveCart: false);
+  }
 
   MyUserModel copyWith({
     String? uid,
