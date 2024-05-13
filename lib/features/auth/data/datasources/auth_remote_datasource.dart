@@ -1,10 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:food_delivery/core/entities/my_user.dart';
 import 'package:food_delivery/features/auth/data/models/my_user_model.dart';
 
 abstract interface class AuthRemoteDatasource {
-  Stream<MyUserModel> get user;
-  Future<void> setUserData(MyUserModel user);
+  Stream<MyUserModel?> get user;
+  Future<void> setUserData(MyUser user);
   Future<MyUserModel> signIn(String email, String password);
   Future<MyUserModel> signUp(String email, String password);
   Future<void> signOut();
@@ -21,9 +22,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         _firebaseFirestore = firebaseFirestore;
 
   @override
-  Stream<MyUserModel> get user =>
+  Stream<MyUserModel?> get user =>
       _firebaseAuth.authStateChanges().asyncMap((fUser) async {
-        if (fUser == null) return MyUserModel.empty();
+        if (fUser == null) return null;
         return await getData(fUser.uid);
       });
 
@@ -49,9 +50,9 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   }
 
   @override
-  Future<void> setUserData(MyUserModel user) {
-    // TODO: implement setUserData
-    throw UnimplementedError();
+  Future<void> setUserData(MyUser user) async {
+    user = user as MyUserModel;
+    await _firebaseFirestore.doc('users/${user.uid}').set(user.toMap());
   }
 
   @override

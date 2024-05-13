@@ -1,6 +1,15 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasource.dart';
+import 'package:food_delivery/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MainApp());
 }
 
@@ -16,9 +25,17 @@ class MainApp extends StatelessWidget {
         colorSchemeSeed: Colors.yellow,
         brightness: Brightness.dark,
       ),
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
+      home: BlocProvider<AuthCubit>(
+        create: (context) => AuthCubit(AuthRepositoryImpl(
+          authRemoteDatasource: AuthRemoteDatasourceImpl(
+            firebaseAuth: FirebaseAuth.instance,
+            firebaseFirestore: FirebaseFirestore.instance,
+          ),
+        )),
+        child: Scaffold(
+          body: Center(
+            child: Text('Hello World!'),
+          ),
         ),
       ),
     );

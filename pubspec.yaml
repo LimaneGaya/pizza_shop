@@ -8,10 +8,10 @@ environment:
 
 dependencies:
   bloc: ^8.1.4
+  cloud_firestore: ^4.17.3
   equatable: ^2.0.5
+  firebase_auth: ^4.19.5
   firebase_core: ^2.31.0
-  firebase_auth:
-  cloud_firestore:
   flutter:
     sdk: flutter
   flutter_bloc: ^8.1.5
@@ -20,7 +20,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

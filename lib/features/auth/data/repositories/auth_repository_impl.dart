@@ -10,19 +10,22 @@ class AuthRepositoryImpl implements AuthRepository {
   }) : _authRemoteDatasource = authRemoteDatasource;
 
   @override
-  Stream<MyUser> get user => _authRemoteDatasource.user;
+  Stream<MyUser?> get user => _authRemoteDatasource.user;
 
   @override
   Future<void> setUserData(MyUser user) {
-    // TODO: implement setUserData
-    throw UnimplementedError();
+    try {
+      return _authRemoteDatasource.setUserData(user);
+    } catch (e, _) {
+      rethrow;
+    }
   }
 
   @override
   Future<MyUser> signIn(String email, String password) async {
     try {
       return await _authRemoteDatasource.signIn(email, password);
-    } catch (e, st) {
+    } catch (e, _) {
       rethrow;
     }
   }
@@ -31,7 +34,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<void> signOut() {
     try {
       return _authRemoteDatasource.signOut();
-    } catch (e, st) {
+    } catch (e, _) {
       rethrow;
     }
   }
@@ -40,7 +43,7 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<MyUser> signUp(String email, String password) {
     try {
       return _authRemoteDatasource.signUp(email, password);
-    } catch (e, st) {
+    } catch (e, _) {
       rethrow;
     }
   }
