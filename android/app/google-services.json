@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "485884426537",
+    "project_id": "gaya-food-delivery",
+    "storage_bucket": "gaya-food-delivery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485884426537:android:4db4579f9cf46bb4905f38",
+        "android_client_info": {
+          "package_name": "com.gaya.fooddelivery.food_delivery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC-LRB3m7z-_tpMx6_d05P_uPmCnzW2x00"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

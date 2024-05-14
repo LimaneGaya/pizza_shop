@@ -6,11 +6,22 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:food_delivery/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:food_delivery/features/auth/presentation/pages/welcome_screen.dart';
+import 'package:food_delivery/features/shop/presentation/pages/home_screen.dart';
+import 'package:food_delivery/firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const MainApp());
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  runApp(
+    BlocProvider<AuthCubit>(
+      create: (context) => AuthCubit(AuthRepositoryImpl(
+          authRemoteDatasource: AuthRemoteDatasourceImpl(
+              firebaseAuth: FirebaseAuth.instance,
+              firebaseFirestore: FirebaseFirestore.instance))),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -22,21 +33,18 @@ class MainApp extends StatelessWidget {
       title: 'Food Delivery',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorSchemeSeed: Colors.yellow,
-        brightness: Brightness.dark,
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.light,
       ),
-      home: BlocProvider<AuthCubit>(
-        create: (context) => AuthCubit(AuthRepositoryImpl(
-          authRemoteDatasource: AuthRemoteDatasourceImpl(
-            firebaseAuth: FirebaseAuth.instance,
-            firebaseFirestore: FirebaseFirestore.instance,
-          ),
-        )),
-        child: Scaffold(
-          body: Center(
-            child: Text('Hello World!'),
-          ),
-        ),
+      home: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          return switch (state) {
+            AuthSuccess _ => const HomeScreen(),
+            AuthLoading _ =>
+              const Scaffold(body: Center(child: CircularProgressIndicator())),
+            _ => const WelcomeScreen(),
+          };
+        },
       ),
     );
   }

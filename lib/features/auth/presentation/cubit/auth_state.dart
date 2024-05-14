@@ -1,6 +1,6 @@
 part of 'auth_cubit.dart';
 
-abstract class AuthState {
+sealed class AuthState {
   final MyUser? user;
   const AuthState({required this.user});
 
@@ -15,18 +15,18 @@ abstract class AuthState {
 }
 
 class AuthInitial extends AuthState {
-  AuthInitial({required super.user});
+  const AuthInitial({required super.user});
 }
 
 class AuthLoading extends AuthState {
-  AuthLoading({required super.user});
+  const AuthLoading({required super.user});
 }
 
 class AuthError extends AuthState {
   final String message;
-  AuthError({required this.message, required super.user});
+  const AuthError({required this.message, required super.user});
 }
 
 class AuthSuccess extends AuthState {
-  AuthSuccess({required super.user});
+  const AuthSuccess({required super.user});
 }

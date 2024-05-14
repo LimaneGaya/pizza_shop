@@ -9,10 +9,10 @@ part 'auth_state.dart';
 class AuthCubit extends Cubit<AuthState> {
   final AuthRepository _authRepository;
   late final StreamSubscription<MyUser?> _userSubscription;
-  AuthCubit(this._authRepository) : super(AuthInitial(user: null)) {
+  AuthCubit(this._authRepository) : super(const AuthInitial(user: null)) {
     _userSubscription = _authRepository.user.listen((user) {
       if (user == null) {
-        emit(AuthInitial(user: null));
+        emit(const AuthInitial(user: null));
       } else {
         emit(AuthSuccess(user: user));
       }
@@ -34,6 +34,12 @@ class AuthCubit extends Cubit<AuthState> {
   void setUserData(MyUser user) => _authRepository.setUserData(user);
   void signOut() async {
     await _authRepository.signOut();
-    emit(AuthInitial(user: null));
+    emit(const AuthInitial(user: null));
+  }
+
+  @override
+  Future<void> close() async {
+    await _userSubscription.cancel();
+    return super.close();
   }
 }
