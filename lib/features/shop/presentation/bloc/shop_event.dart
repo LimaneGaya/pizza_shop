@@ -1,8 +1,7 @@
 part of 'shop_bloc.dart';
 
-abstract class ShopEvent extends Equatable {
-  const ShopEvent();
+sealed class ShopEvent{}
 
-  @override
-  List<Object> get props => [];
-}
+class GetPizzas extends ShopEvent{}
+
+

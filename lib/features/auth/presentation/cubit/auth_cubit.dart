@@ -19,9 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void signUp(String email, String password) async {
+  void signUp(String email, String password, String name) async {
     emit(AuthLoading(user: state.user));
-    final user = await _authRepository.signUp(email, password);
+    final user = await _authRepository.signUp(email, password, name);
     emit(AuthSuccess(user: user));
   }
 

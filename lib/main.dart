@@ -7,6 +7,9 @@ import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasou
 import 'package:food_delivery/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:food_delivery/features/auth/presentation/pages/welcome_screen.dart';
+import 'package:food_delivery/features/shop/data/datasources/shop_remote_datasource.dart';
+import 'package:food_delivery/features/shop/data/repositories/shop_repository_impl.dart';
+import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/home_screen.dart';
 import 'package:food_delivery/firebase_options.dart';
 
@@ -39,7 +42,13 @@ class MainApp extends StatelessWidget {
       home: BlocBuilder<AuthCubit, AuthState>(
         builder: (context, state) {
           return switch (state) {
-            AuthSuccess _ => const HomeScreen(),
+            AuthSuccess _ => BlocProvider(
+                create: (context) => ShopBloc(
+                    shopRepository: ShopRepositoryImpl(
+                        shopRemoteDatasource: ShopRemoteDatasourceImpl(
+                            firebaseFirestore: FirebaseFirestore.instance))),
+                child: const HomeScreen(),
+              ),
             AuthLoading _ =>
               const Scaffold(body: Center(child: CircularProgressIndicator())),
             _ => const WelcomeScreen(),

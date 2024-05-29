@@ -1,9 +1,17 @@
 part of 'shop_bloc.dart';
 
-abstract class ShopState extends Equatable {
-  const ShopState();  
+sealed class ShopState {}
 
-  @override
-  List<Object> get props => [];
-}
 class ShopInitial extends ShopState {}
+
+class ShopLoading extends ShopState {}
+
+class ShopLoadSuccess extends ShopState {
+  final List<Pizza> pizzas;
+  ShopLoadSuccess(this.pizzas);
+}
+
+class ShopError extends ShopState {
+  final String message;
+  ShopError(this.message);
+}
