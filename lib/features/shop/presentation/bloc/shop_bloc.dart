@@ -11,10 +11,9 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
   ShopBloc({
     required ShopRepository shopRepository,
   })  : _shopRepository = shopRepository,
-        super(ShopInitial()) {
+        super(ShopLoading()) {
     on<ShopEvent>((event, emit) => emit(ShopLoading()));
     on<GetPizzas>(getPizzas);
-    
   }
 
   void getPizzas(GetPizzas event, Emitter<ShopState> emit) async {

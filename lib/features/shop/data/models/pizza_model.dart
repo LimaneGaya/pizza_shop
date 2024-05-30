@@ -1,7 +1,6 @@
 import 'package:food_delivery/features/shop/data/models/macro_model.dart';
 import 'package:food_delivery/features/shop/domain/entities/pizza.dart';
 
-
 class PizzaModel extends Pizza {
   const PizzaModel({
     required super.pizzaId,
@@ -38,6 +37,19 @@ class PizzaModel extends Pizza {
     );
   }
 
+  PizzaModel.fromPizza(Pizza pizza)
+      : this(
+          pizzaId: pizza.pizzaId,
+          picture: pizza.picture,
+          isVeg: pizza.isVeg,
+          spicy: pizza.spicy,
+          name: pizza.name,
+          description: pizza.description,
+          price: pizza.price,
+          discount: pizza.discount,
+          macros: pizza.macros,
+        );
+
   Map<String, dynamic> toMap() {
     return {
       'picture': picture,
@@ -47,13 +59,13 @@ class PizzaModel extends Pizza {
       'description': description,
       'price': price,
       'discount': discount,
-      'macros': (macros as MacrosModel).toMap(),
+      'macros': MacrosModel.fromMacros(macros).toMap(),
     };
   }
 
   factory PizzaModel.fromMap(Map<String, dynamic> map) {
     return PizzaModel(
-      pizzaId: map['PizzaId'] ?? '',
+      pizzaId: map['id'] ?? '',
       picture: map['picture'] ?? '',
       isVeg: map['isVeg'] ?? false,
       spicy: map['spicy']?.toInt() ?? 0,
@@ -64,5 +76,4 @@ class PizzaModel extends Pizza {
       macros: MacrosModel.fromMap(map['macros']),
     );
   }
-
 }

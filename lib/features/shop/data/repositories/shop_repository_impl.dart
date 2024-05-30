@@ -12,11 +12,15 @@ class ShopRepositoryImpl implements ShopRepository {
   @override
   Future<List<Pizza>> getPizzas() async {
     try {
-      return await _shopRemoteDatasource.getPizzas();
+      final list = await _shopRemoteDatasource.getPizzas();
+      for (int i = 0; i < list.length; i++) {
+        final url = await _shopRemoteDatasource.getStorageUrl("pizzas/${list[i].picture}");
+        list[i] = list[i].copyWith(picture: url);
+      }
+      return list;
     } catch (e) {
       print(e);
       rethrow;
     }
   }
-  
 }

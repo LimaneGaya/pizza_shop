@@ -1,104 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:food_delivery/features/shop/data/models/pizza_model.dart';
-import 'package:food_delivery/features/shop/domain/entities/macro.dart';
-import 'package:food_delivery/features/shop/domain/entities/pizza.dart';
 import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/details_screen.dart';
 
-final pizzas = [
-  Pizza(
-    name: 'Margherita',
-    price: 13,
-    picture: '1.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Peperoni',
-    price: 13,
-    picture: '2.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Veggie',
-    price: 13,
-    picture: '3.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Hawaiian',
-    price: 13,
-    picture: '4.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Meat',
-    price: 13,
-    picture: '5.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Cheese',
-    price: 13,
-    picture: '6.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Vegan',
-    price: 13,
-    picture: '7.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-  Pizza(
-    name: 'Chicken',
-    price: 13,
-    picture: '8.webp',
-    description: 'Tomato, Mozzarella, Basil',
-    macros: Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-    isVeg: true,
-    pizzaId: '0',
-    discount: 1,
-    spicy: 0,
-  ),
-];
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -122,19 +28,6 @@ class HomeScreen extends StatelessWidget {
         actions: [
           ElevatedButton(
               onPressed: () async {
-                Pizza p = Pizza(
-                  name: 'Pizza',
-                  price: 13,
-                  picture: '9.webp',
-                  description: 'Tomato, Mozzarella, Basil',
-                  macros:
-                      Macros(calories: 1200, proteins: 15, fat: 8, carbs: 12),
-                  isVeg: true,
-                  pizzaId: '0',
-                  discount: 1,
-                  spicy: 0,
-                );
-                final pz = p as PizzaModel;
               },
               child: const Icon(CupertinoIcons.cart)),
           IconButton(
@@ -301,7 +194,12 @@ class HomeScreen extends StatelessWidget {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else {
+            } else if (state is ShopError) {
+              return Center(
+                child: Text("An error has occured... ${state.message}"),
+              );
+            }
+            else {
               return const Center(
                 child: Text("An error has occured..."),
               );

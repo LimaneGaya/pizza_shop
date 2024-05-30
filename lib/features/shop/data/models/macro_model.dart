@@ -12,6 +12,14 @@ class MacrosModel extends Macros {
     required super.carbs,
   });
 
+  MacrosModel.fromMacros(Macros macros)
+      : this(
+          calories: macros.calories,
+          proteins: macros.proteins,
+          fat: macros.fat,
+          carbs: macros.carbs,
+        );
+
   MacrosModel copyWith({
     int? calories,
     int? proteins,

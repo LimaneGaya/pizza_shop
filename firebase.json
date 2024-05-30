@@ -1,1 +1,41 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"gaya-food-delivery","appId":"1:485884426537:android:4db4579f9cf46bb4905f38","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"gaya-food-delivery","configurations":{"android":"1:485884426537:android:4db4579f9cf46bb4905f38","web":"1:485884426537:web:15668de371f80564905f38","windows":"1:485884426537:web:0515e664bb512156905f38"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "gaya-food-delivery",
+          "appId": "1:485884426537:android:4db4579f9cf46bb4905f38",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "gaya-food-delivery",
+          "configurations": {
+            "android": "1:485884426537:android:4db4579f9cf46bb4905f38",
+            "web": "1:485884426537:web:15668de371f80564905f38",
+            "windows": "1:485884426537:web:0515e664bb512156905f38"
+          }
+        }
+      }
+    }
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "storage.rules",
+    "headers": [ {
+            "source": "**/*",
+            "headers": [
+            {"key": "Cross-Origin-Opener-Policy",
+              "value": "same-origin"},
+            {"key": "Cross-Origin-Embedder-Policy",
+            "value": "credentialless"},
+            {"key": "Access-Control-Allow-Origin",
+            "value": "*"}
+]
+          } ]
+  }
+}
