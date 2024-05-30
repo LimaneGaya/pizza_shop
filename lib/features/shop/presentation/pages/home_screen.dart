@@ -5,7 +5,6 @@ import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/details_screen.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
@@ -27,9 +26,7 @@ class HomeScreen extends StatelessWidget {
         ),
         actions: [
           ElevatedButton(
-              onPressed: () async {
-              },
-              child: const Icon(CupertinoIcons.cart)),
+              onPressed: () async {}, child: const Icon(CupertinoIcons.cart)),
           IconButton(
               onPressed: () {
                 context.read<AuthCubit>().signOut();
@@ -43,8 +40,8 @@ class HomeScreen extends StatelessWidget {
           builder: (context, state) {
             if (state is ShopLoadSuccess) {
               return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
+                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                      maxCrossAxisExtent: 300,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
                       childAspectRatio: 9 / 16),
@@ -69,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                         },
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Image.network(state.pizzas[i].picture),
                             Padding(
@@ -198,8 +196,7 @@ class HomeScreen extends StatelessWidget {
               return Center(
                 child: Text("An error has occured... ${state.message}"),
               );
-            }
-            else {
+            } else {
               return const Center(
                 child: Text("An error has occured..."),
               );
