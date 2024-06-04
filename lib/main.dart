@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:food_delivery/features/auth/data/repositories/auth_repository_impl.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:food_delivery/features/auth/presentation/pages/splash_screen.dart';
 import 'package:food_delivery/features/auth/presentation/pages/welcome_screen.dart';
 import 'package:food_delivery/features/shop/data/datasources/shop_remote_datasource.dart';
 import 'package:food_delivery/features/shop/data/repositories/shop_repository_impl.dart';
@@ -38,60 +39,56 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AuthCubit, AuthState>(
-      builder: (context, state) {
-        return MaterialApp.router(
-          routerConfig: GoRouter(
-            navigatorKey: _goRouterKey,
-            redirect: (context, state) {
-              return switch (state) {
-                AuthSuccess _ => '/home',
-                _ => '/',
-              };
-            },
-            initialLocation: '/',
+    return MaterialApp.router(
+      routerConfig: GoRouter(
+        navigatorKey: _goRouterKey,
+        initialLocation: '/',
+        routes: [
+          GoRoute(
+            path: '/',
+            builder: (context, state) => const SplashScreen(),
+          ),
+          ShellRoute(
+            navigatorKey: _shellKey,
             routes: [
               GoRoute(
-                path: '/',
-                builder: (context, state) => const WelcomeScreen(),
-              ),
-              ShellRoute(
-                navigatorKey: _shellKey,
-                routes: [
-                  GoRoute(
-                    path: '/home',
-                    builder: (context, state) {
-                      return BlocProvider(
-                        create: (context) => ShopBloc(
-                            shopRepository: ShopRepositoryImpl(
-                                shopRemoteDatasource: ShopRemoteDatasourceImpl(
-                                    firebaseFirestore:
-                                        FirebaseFirestore.instance,
-                                    firebaseStorage: FirebaseStorage.instance)))
-                          ..add(GetPizzas()),
-                        child: const HomeScreen(),
-                      );
-                    },
-                  )
-                ],
-                builder: (context, state, child) {
-                  if (state.fullPath == '/home' || state.fullPath == '/') {
-                    return child;
-                  } else {
-                    return const HomeScreen();
-                  }
+                path: '/home',
+                builder: (context, state) {
+                  return BlocProvider(
+                    create: (context) => ShopBloc(
+                        shopRepository: ShopRepositoryImpl(
+                            shopRemoteDatasource: ShopRemoteDatasourceImpl(
+                                firebaseFirestore:
+                                    FirebaseFirestore.instance,
+                                firebaseStorage: FirebaseStorage.instance)))
+                      ..add(GetPizzas()),
+                    child: const HomeScreen(),
+                  );
                 },
               ),
+              GoRoute(
+                path: '/auth',
+                builder: (context, state) {
+                  return const WelcomeScreen();
+                },
+              )
             ],
+            builder: (context, state, child) {
+              if (state.fullPath == '/home' || state.fullPath == '/auth') {
+                return child;
+              } else {
+                return const HomeScreen();
+              }
+            },
           ),
-          title: 'Food Delivery',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorSchemeSeed: Colors.blue,
-            brightness: Brightness.dark,
-          ),
-        );
-      },
+        ],
+      ),
+      title: 'Food Delivery',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorSchemeSeed: Colors.blue,
+        brightness: Brightness.dark,
+      ),
     );
   }
 }

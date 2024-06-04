@@ -44,12 +44,12 @@ class HomeScreen extends StatelessWidget {
                       maxCrossAxisExtent: 300,
                       crossAxisSpacing: 16,
                       mainAxisSpacing: 16,
-                      childAspectRatio: 9 / 16),
+                      childAspectRatio: 11 / 16),
                   itemCount: state.pizzas.length,
                   itemBuilder: (context, int i) {
                     return Material(
                       elevation: 3,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onSecondary,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),
                       ),
