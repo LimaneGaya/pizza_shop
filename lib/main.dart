@@ -13,10 +13,12 @@ import 'package:food_delivery/features/shop/data/repositories/shop_repository_im
 import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/home_screen.dart';
 import 'package:food_delivery/firebase_options.dart';
+import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
     BlocProvider<AuthCubit>(
       create: (context) => AuthCubit(AuthRepositoryImpl(
@@ -28,36 +30,68 @@ void main() async {
   );
 }
 
+final _goRouterKey = GlobalKey<NavigatorState>();
+final _shellKey = GlobalKey<NavigatorState>();
+
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Food Delivery',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorSchemeSeed: Colors.blue,
-        brightness: Brightness.light,
-      ),
-      home: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          return switch (state) {
-            AuthSuccess _ => BlocProvider(
-                create: (context) => ShopBloc(
-                    shopRepository: ShopRepositoryImpl(
-                        shopRemoteDatasource: ShopRemoteDatasourceImpl(
-                            firebaseFirestore: FirebaseFirestore.instance,
-                            firebaseStorage: FirebaseStorage.instance)))
-                  ..add(GetPizzas()),
-                child: const HomeScreen(),
+    return BlocBuilder<AuthCubit, AuthState>(
+      builder: (context, state) {
+        return MaterialApp.router(
+          routerConfig: GoRouter(
+            navigatorKey: _goRouterKey,
+            redirect: (context, state) {
+              return switch (state) {
+                AuthSuccess _ => '/home',
+                _ => '/',
+              };
+            },
+            initialLocation: '/',
+            routes: [
+              GoRoute(
+                path: '/',
+                builder: (context, state) => const WelcomeScreen(),
               ),
-            AuthLoading _ =>
-              const Scaffold(body: Center(child: CircularProgressIndicator())),
-            _ => const WelcomeScreen(),
-          };
-        },
-      ),
+              ShellRoute(
+                navigatorKey: _shellKey,
+                routes: [
+                  GoRoute(
+                    path: '/home',
+                    builder: (context, state) {
+                      return BlocProvider(
+                        create: (context) => ShopBloc(
+                            shopRepository: ShopRepositoryImpl(
+                                shopRemoteDatasource: ShopRemoteDatasourceImpl(
+                                    firebaseFirestore:
+                                        FirebaseFirestore.instance,
+                                    firebaseStorage: FirebaseStorage.instance)))
+                          ..add(GetPizzas()),
+                        child: const HomeScreen(),
+                      );
+                    },
+                  )
+                ],
+                builder: (context, state, child) {
+                  if (state.fullPath == '/home' || state.fullPath == '/') {
+                    return child;
+                  } else {
+                    return const HomeScreen();
+                  }
+                },
+              ),
+            ],
+          ),
+          title: 'Food Delivery',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            colorSchemeSeed: Colors.blue,
+            brightness: Brightness.dark,
+          ),
+        );
+      },
     );
   }
 }
