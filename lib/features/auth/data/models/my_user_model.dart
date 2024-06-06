@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_delivery/core/entities/my_user.dart';
 
 class MyUserModel extends MyUser {
@@ -8,9 +9,11 @@ class MyUserModel extends MyUser {
     required super.email,
     required super.name,
     required super.hasActiveCart,
+    required super.isAdmin,
   });
   factory MyUserModel.empty() {
-    return MyUserModel(uid: '', email: '', name: '', hasActiveCart: false);
+    return MyUserModel(
+        uid: '', email: '', name: '', hasActiveCart: false, isAdmin: false);
   }
 
   MyUserModel copyWith({
@@ -18,12 +21,14 @@ class MyUserModel extends MyUser {
     String? email,
     String? name,
     bool? hasActiveCart,
+    bool? isAdmin,
   }) {
     return MyUserModel(
       uid: uid ?? this.uid,
       email: email ?? this.email,
       name: name ?? this.name,
       hasActiveCart: hasActiveCart ?? this.hasActiveCart,
+      isAdmin: isAdmin ?? this.isAdmin,
     );
   }
 
@@ -33,6 +38,7 @@ class MyUserModel extends MyUser {
       'email': email,
       'name': name,
       'hasActiveCart': hasActiveCart,
+      'isAdmin': isAdmin
     };
   }
 
@@ -43,18 +49,27 @@ class MyUserModel extends MyUser {
           'email': String email,
           'name': String name,
           'hasActiveCart': bool hasActiveCart,
+          'isAdmin': bool isAdmin
         }) {
       return MyUserModel(
         uid: uid,
         email: email,
         name: name,
         hasActiveCart: hasActiveCart,
+        isAdmin: isAdmin,
       );
     } else {
       throw Exception('Unexpected data format');
     }
   }
-
+  MyUserModel.fromUser(MyUser user)
+      : this(
+          uid: user.uid,
+          email: user.email,
+          name: user.name,
+          hasActiveCart: user.hasActiveCart,
+          isAdmin: user.isAdmin,
+        );
   String toJson() => json.encode(toMap());
 
   factory MyUserModel.fromJson(String source) =>
@@ -62,7 +77,7 @@ class MyUserModel extends MyUser {
 
   @override
   String toString() {
-    return 'MyUserModel(uid: $uid, email: $email, name: $name, hasActiveCart: $hasActiveCart)';
+    return 'MyUserModel(uid: $uid, email: $email, name: $name, hasActiveCart: $hasActiveCart, isAdmin: $isAdmin)';
   }
 
   @override
@@ -73,7 +88,8 @@ class MyUserModel extends MyUser {
         other.uid == uid &&
         other.email == email &&
         other.name == name &&
-        other.hasActiveCart == hasActiveCart;
+        other.hasActiveCart == hasActiveCart &&
+        other.isAdmin == isAdmin;
   }
 
   @override
@@ -81,6 +97,7 @@ class MyUserModel extends MyUser {
     return uid.hashCode ^
         email.hashCode ^
         name.hashCode ^
-        hasActiveCart.hashCode;
+        hasActiveCart.hashCode ^
+        isAdmin.hashCode;
   }
 }

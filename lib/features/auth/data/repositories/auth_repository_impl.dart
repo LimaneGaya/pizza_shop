@@ -13,22 +13,25 @@ class AuthRepositoryImpl implements AuthRepository {
   Stream<MyUser?> get user => _authRemoteDatasource.user;
 
   @override
-  Future<void> setUserData(MyUser user) async{
+  Future<void> setUserData(MyUser user) async {
     try {
       return await _authRemoteDatasource.setUserData(user);
     } catch (e, _) {
       rethrow;
     }
   }
-   @override
-  Future<MyUser> signUp(String email, String password, String name) async{
+
+  @override
+  Future<MyUser> signUp(String email, String password, String name) async {
     try {
       final user = await _authRemoteDatasource.signUp(email, password);
-      await setUserData(user.copyWith(name: name));
+      await setUserData(user.copyWith(name: name, email: email));
       return user;
-    } catch (e, _) {
+    }catch (e, _) {
+      print(e.toString());
       rethrow;
     }
+
   }
 
   @override
@@ -41,13 +44,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> signOut() async{
+  Future<void> signOut() async {
     try {
       return await _authRemoteDatasource.signOut();
     } catch (e, _) {
       rethrow;
     }
   }
-
- 
 }

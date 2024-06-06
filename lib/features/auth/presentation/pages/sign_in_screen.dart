@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:food_delivery/features/auth/presentation/widgets/my_text_field.dart';
+import 'package:go_router/go_router.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -15,33 +16,17 @@ class _SignInScreenState extends State<SignInScreen> {
   final passwordController = TextEditingController();
   final emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
-  bool signInRequired = false;
   IconData iconPassword = CupertinoIcons.eye_fill;
   bool obscurePassword = true;
   String? _errorMsg;
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthSuccess) {
-          setState(() {
-            signInRequired = false;
-          });
-        } else if (state is AuthLoading) {
-          setState(() {
-            signInRequired = true;
-          });
-        } else if (state is AuthError) {
-          setState(() {
-            signInRequired = false;
-            _errorMsg = 'Invalid email or password';
-          });
-        }
-      },
-      child: Form(
-          key: _formKey,
-          child: Column(
+    return Form(
+      key: _formKey,
+      child: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          return Column(
             children: [
               const SizedBox(height: 20),
               SizedBox(
@@ -98,40 +83,39 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
               const SizedBox(height: 20),
-              !signInRequired
-                  ? SizedBox(
-                      width: MediaQuery.of(context).size.width * 0.5,
-                      child: TextButton(
-                          onPressed: () {
-                            if (!_formKey.currentState!.validate()) return;
-                            context.read<AuthCubit>().signIn(
-                                  emailController.text,
-                                  passwordController.text,
-                                );
-                          },
-                          style: TextButton.styleFrom(
-                              elevation: 3.0,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(60))),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
-                                horizontal: 25, vertical: 5),
-                            child: Text(
-                              'Sign In',
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600),
-                            ),
-                          )),
-                    )
-                  : const CircularProgressIndicator(),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.5,
+                child: TextButton(
+                    onPressed: () {
+                      if (!_formKey.currentState!.validate()) return;
+                      context.read<AuthCubit>().signIn(
+                            emailController.text,
+                            passwordController.text,
+                          );
+                    },
+                    style: TextButton.styleFrom(
+                        elevation: 3.0,
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(60))),
+                    child: const Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                      child: Text(
+                        'Sign In',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    )),
+              )
             ],
-          )),
+          );
+        },
+      ),
     );
   }
 }

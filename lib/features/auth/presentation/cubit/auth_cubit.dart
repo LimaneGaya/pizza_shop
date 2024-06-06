@@ -19,20 +19,21 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  void signUp(String email, String password, String name) async {
+  Future<void> signUp(String email, String password, String name) async {
     emit(AuthLoading(user: state.user));
     final user = await _authRepository.signUp(email, password, name);
     emit(AuthSuccess(user: user));
   }
 
-  void signIn(String email, String password) async {
+  Future<void> signIn(String email, String password) async {
     emit(AuthLoading(user: state.user));
     final user = await _authRepository.signIn(email, password);
     emit(AuthSuccess(user: user));
   }
 
   void setUserData(MyUser user) => _authRepository.setUserData(user);
-  void signOut() async {
+
+  Future<void> signOut() async {
     await _authRepository.signOut();
     emit(const AuthInitial(user: null));
   }

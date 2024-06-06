@@ -5,13 +5,23 @@ sealed class AuthState {
   const AuthState({required this.user});
 
   @override
-  operator ==(Object other) {
+  operator ==(covariant AuthState other) {
     if (identical(this, other)) return true;
-    return other is AuthState && other.user == user;
+    return other.user?.uid == user?.uid &&
+        other.user?.email == user?.email &&
+        other.user?.name == user?.name &&
+        other.user?.hasActiveCart == user?.hasActiveCart &&
+        other.user?.isAdmin == user?.isAdmin;
   }
 
   @override
-  int get hashCode => user.hashCode;
+  int get hashCode => Object.hash(
+        user?.uid,
+        user?.email,
+        user?.name,
+        user?.hasActiveCart,
+        user?.isAdmin,
+      );
 }
 
 class AuthInitial extends AuthState {
