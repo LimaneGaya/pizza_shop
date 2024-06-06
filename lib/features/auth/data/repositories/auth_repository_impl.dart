@@ -24,14 +24,15 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<MyUser> signUp(String email, String password, String name) async {
     try {
-      final user = await _authRemoteDatasource.signUp(email, password);
-      await setUserData(user.copyWith(name: name, email: email));
+      final user = await _authRemoteDatasource
+          .signUp(email, password)
+          .then((user) => user.copyWith(name: name, email: email));
+      await setUserData(user);
       return user;
-    }catch (e, _) {
+    } catch (e, _) {
       print(e.toString());
       rethrow;
     }
-
   }
 
   @override

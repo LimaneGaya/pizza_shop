@@ -10,7 +10,9 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return context.watch<AuthCubit>().state.user!.isAdmin
+    final user = context.watch<AuthCubit>().state.user!;
+    print(user);
+    return user.isAdmin
         ? const HomeScreenAdmin()
         : const HomeScreenUser();
   }

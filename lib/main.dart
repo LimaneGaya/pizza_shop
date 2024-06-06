@@ -13,6 +13,7 @@ import 'package:food_delivery/features/auth/presentation/pages/welcome_screen.da
 import 'package:food_delivery/features/shop/data/datasources/shop_remote_datasource.dart';
 import 'package:food_delivery/features/shop/data/repositories/shop_repository_impl.dart';
 import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
+import 'package:food_delivery/features/shop/presentation/pages/create_screen.dart';
 import 'package:food_delivery/features/shop/presentation/pages/home_screen.dart';
 import 'package:food_delivery/firebase_options.dart';
 import 'package:go_router/go_router.dart';
@@ -93,10 +94,7 @@ final _goRouter = GoRouter(
         ),
         GoRoute(
           path: '/create',
-          builder: (context, state) => Expanded(
-              child: Container(
-            color: Colors.red,
-          )),
+          builder: (context, state) => const CreatePizzaScreen(),
         ),
       ],
     ),
@@ -132,7 +130,7 @@ class ShellShell extends StatelessWidget {
           IconButton(
               onPressed: () {
                 context.read<AuthCubit>().signOut();
-                context.go('/');
+                context.go('/auth');
               },
               icon: const Icon(CupertinoIcons.arrow_right_to_line)),
           IconButton(

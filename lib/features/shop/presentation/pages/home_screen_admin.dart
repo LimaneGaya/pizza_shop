@@ -17,7 +17,7 @@ class HomeScreenAdmin extends StatelessWidget {
                   child: Container(
                     height: 250,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(20)
                     ),
                   )
@@ -27,7 +27,7 @@ class HomeScreenAdmin extends StatelessWidget {
                   child: Container(
                     height: 250,
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.primary,
                       borderRadius: BorderRadius.circular(20)
                     ),
                   )
@@ -38,7 +38,7 @@ class HomeScreenAdmin extends StatelessWidget {
             Container(
               height: 250,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).colorScheme.primary,
                 borderRadius: BorderRadius.circular(20)
               ),
             )

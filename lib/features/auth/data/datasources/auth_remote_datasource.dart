@@ -28,9 +28,23 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
         return await getData(fUser.uid);
       });
 
+  @override
+  Future<void> setUserData(MyUser user) async {
+    user = user as MyUserModel;
+    await _firebaseFirestore
+        .collection('users')
+        .doc(user.uid)
+        .set(user.toMap());
+  }
+
   Future<MyUserModel> getData(String uid) async {
-    return await _firebaseFirestore.doc('users/$uid').get().then((fDoc) {
-      if (fDoc.exists) return MyUserModel.fromMap(fDoc.data()!..['uid']=uid);
+    return await _firebaseFirestore
+        .collection('users')
+        .doc(uid)
+        .get()
+        .then((fDoc) {
+      final d = fDoc.data()!..['uid'] = uid;
+      if (fDoc.exists) return MyUserModel.fromMap(d);
       return MyUserModel.empty();
     });
   }
@@ -46,13 +60,15 @@ class AuthRemoteDatasourceImpl implements AuthRemoteDatasource {
   Future<MyUserModel> signUp(String email, String password) async {
     return await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password)
-        .then((fUser) async => await getData(fUser.user!.uid));
-  }
-
-  @override
-  Future<void> setUserData(MyUser user) async {
-    user = user as MyUserModel;
-    await _firebaseFirestore.collection('users').doc(user.email.split('@').first).set(user.toMap());
+        .then((fUser) async {
+      return MyUserModel(
+        email: email,
+        uid: fUser.user!.uid,
+        name: email,
+        hasActiveCart: false,
+        isAdmin: false,
+      );
+    });
   }
 
   @override

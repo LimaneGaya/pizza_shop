@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:food_delivery/features/auth/presentation/widgets/my_text_field.dart';
+import 'package:food_delivery/core/widgets/my_text_field.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -34,7 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         child: BlocBuilder<AuthCubit, AuthState>(
           builder: (context, state) {
             return state is AuthLoading
-                ? const CircularProgressIndicator()
+                ? const Center(child: CircularProgressIndicator())
                 : Column(
                     children: [
                       const SizedBox(height: 20),
