@@ -22,5 +22,9 @@ class Pizza {
     required this.discount,
     required this.macros,
   });
-
+}
+enum PizzaSpicy {
+  bland,
+  balance,
+  spicy
 }

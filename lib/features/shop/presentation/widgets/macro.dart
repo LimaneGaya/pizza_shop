@@ -72,11 +72,11 @@ class MyMacroWidgetEdit extends StatelessWidget {
     return Expanded(
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).colorScheme.surface,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.shade400,
+              color: Theme.of(context).colorScheme.shadow,
               offset: const Offset(2, 2),
               blurRadius: 5
             )
@@ -88,7 +88,7 @@ class MyMacroWidgetEdit extends StatelessWidget {
             children: [
               FaIcon(
                 icon, 
-                color: Colors.redAccent,
+                color: Theme.of(context).colorScheme.secondary,
               ),
               const SizedBox(height: 4),
               TextField(
