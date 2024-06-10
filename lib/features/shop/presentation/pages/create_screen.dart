@@ -59,7 +59,7 @@ class _CreatePizzaScreenState extends State<CreatePizzaScreen> {
           child: BlocConsumer<AdminBloc, AdminState>(
             listener: (context, state) {
               if (state is CreatePizzaSuccess) {
-                context.go('/');
+                context.pop();
               } else if (state is CreatePizzaError) {
                 showDialog(
                     context: context,

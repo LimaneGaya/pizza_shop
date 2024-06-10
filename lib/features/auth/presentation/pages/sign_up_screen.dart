@@ -18,7 +18,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   IconData iconPassword = Icons.remove_red_eye;
   bool obscurePassword = true;
-  bool signUpRequired = false;
 
   bool containsUpperCase = false;
   bool containsLowerCase = false;
@@ -222,43 +221,41 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       SizedBox(
                           height: MediaQuery.of(context).size.height * 0.02),
-                      !signUpRequired
-                          ? SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.5,
-                              child: TextButton(
-                                  onPressed: () {
-                                    if (!_formKey.currentState!.validate())
-                                      return;
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.5,
+                        child: TextButton(
+                            onPressed: () {
+                              if (!_formKey.currentState!.validate()) return;
 
-                                    context.read<AuthCubit>().signUp(
-                                          emailController.text,
-                                          passwordController.text,
-                                          nameController.text,
-                                        );
-                                  },
-                                  style: TextButton.styleFrom(
-                                      elevation: 3.0,
-                                      backgroundColor:
-                                          Theme.of(context).colorScheme.primary,
-                                      foregroundColor: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(60))),
-                                  child: const Padding(
-                                    padding: EdgeInsets.symmetric(
-                                        horizontal: 25, vertical: 5),
-                                    child: Text(
-                                      'Sign Up',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  )),
-                            )
-                          : const CircularProgressIndicator()
+                              context.read<AuthCubit>().signUp(
+                                    emailController.text,
+                                    passwordController.text,
+                                    nameController.text,
+                                  );
+                            },
+                            style: TextButton.styleFrom(
+                                elevation: 3.0,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(60))),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 25, vertical: 5),
+                              child: Text(
+                                'Sign Up',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.onPrimary,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            )),
+                      )
                     ],
                   );
           },

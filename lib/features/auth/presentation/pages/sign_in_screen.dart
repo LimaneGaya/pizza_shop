@@ -99,17 +99,17 @@ class _SignInScreenState extends State<SignInScreen> {
                               elevation: 3.0,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
-                              foregroundColor: Colors.white,
+                              foregroundColor: Theme.of(context).colorScheme.onPrimary,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(60))),
-                          child: const Padding(
-                            padding: EdgeInsets.symmetric(
+                          child:  Padding(
+                            padding: const EdgeInsets.symmetric(
                                 horizontal: 25, vertical: 5),
                             child: Text(
                               'Sign In',
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                  color: Colors.white,
+                                  color:  Theme.of(context).colorScheme.onPrimary,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600),
                             ),
