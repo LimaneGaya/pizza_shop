@@ -1,36 +1,22 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasource.dart';
-import 'package:food_delivery/features/auth/data/repositories/auth_repository_impl.dart';
+import 'package:food_delivery/features/shop/presentation/blocs/admin_bloc/admin_bloc.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:food_delivery/features/auth/presentation/pages/splash_screen.dart';
 import 'package:food_delivery/features/auth/presentation/pages/welcome_screen.dart';
-import 'package:food_delivery/features/shop/data/datasources/shop_remote_datasource.dart';
-import 'package:food_delivery/features/shop/data/repositories/shop_repository_impl.dart';
-import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
+import 'package:food_delivery/features/shop/presentation/blocs/shop_bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/create_screen.dart';
-import 'package:food_delivery/features/shop/presentation/pages/home_screen.dart';
-import 'package:food_delivery/firebase_options.dart';
+import 'package:food_delivery/home_screen.dart';
+import 'package:food_delivery/service_locator.dart';
 import 'package:go_router/go_router.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
-  runApp(
-    BlocProvider<AuthCubit>(
-      create: (context) => AuthCubit(AuthRepositoryImpl(
-          authRemoteDatasource: AuthRemoteDatasourceImpl(
-              firebaseAuth: FirebaseAuth.instance,
-              firebaseFirestore: FirebaseFirestore.instance))),
-      child: const MainApp(),
-    ),
-  );
+  await init();
+  runApp(BlocProvider<AuthCubit>(
+    create: (context) => sl<AuthCubit>(),
+    child: const MainApp(),
+  ));
 }
 
 final _goRouterKey = GlobalKey<NavigatorState>();
@@ -63,10 +49,6 @@ final _goRouter = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(
-      path: '/',
-      builder: (context, state) => const SplashScreen(),
-    ),
-    GoRoute(
       path: '/auth',
       builder: (context, state) {
         return const WelcomeScreen();
@@ -79,22 +61,24 @@ final _goRouter = GoRouter(
       },
       routes: [
         GoRoute(
+          path: '/',
+          builder: (context, state) => const HomeScreen(),
+        ),
+        GoRoute(
           path: '/home',
           builder: (context, state) {
             return BlocProvider(
-              create: (context) => ShopBloc(
-                  shopRepository: ShopRepositoryImpl(
-                      shopRemoteDatasource: ShopRemoteDatasourceImpl(
-                          firebaseFirestore: FirebaseFirestore.instance,
-                          firebaseStorage: FirebaseStorage.instance)))
-                ..add(GetPizzas()),
+              create: (context) => sl<ShopBloc>()..add(GetPizzas()),
               child: const HomeScreen(),
             );
           },
         ),
         GoRoute(
           path: '/create',
-          builder: (context, state) => const CreatePizzaScreen(),
+          builder: (context, state) => BlocProvider(
+            create: (context) => sl<AdminBloc>(),
+            child: const CreatePizzaScreen(),
+          ),
         ),
       ],
     ),
@@ -133,11 +117,12 @@ class ShellShell extends StatelessWidget {
                 context.go('/auth');
               },
               icon: const Icon(CupertinoIcons.arrow_right_to_line)),
-          IconButton(
-              onPressed: () {
-                context.go('/create');
-              },
-              icon: const Icon(CupertinoIcons.add))
+          if (GoRouterState.of(context).uri.toString() != '/create')
+            IconButton(
+                onPressed: () {
+                  context.go('/create');
+                },
+                icon: const Icon(CupertinoIcons.add))
         ],
       ),
       body: child,

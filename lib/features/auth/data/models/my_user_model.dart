@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:food_delivery/core/entities/my_user.dart';
 
 class MyUserModel extends MyUser {

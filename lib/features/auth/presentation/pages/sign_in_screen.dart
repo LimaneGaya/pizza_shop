@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:food_delivery/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:food_delivery/core/widgets/my_text_field.dart';
-import 'package:go_router/go_router.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

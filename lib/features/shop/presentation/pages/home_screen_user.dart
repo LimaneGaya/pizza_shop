@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:food_delivery/features/shop/presentation/bloc/shop_bloc.dart';
+import 'package:food_delivery/features/shop/presentation/blocs/shop_bloc/shop_bloc.dart';
 import 'package:food_delivery/features/shop/presentation/pages/details_screen.dart';
 
 class HomeScreenUser extends StatelessWidget {

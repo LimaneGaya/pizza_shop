@@ -5,45 +5,41 @@ class HomeScreenAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Expanded(
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Expanded(
                   child: Container(
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                  )
-                ),
-                const SizedBox(width: 20,),
-                Expanded(
-                  child: Container(
-                    height: 250,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary,
-                      borderRadius: BorderRadius.circular(20)
-                    ),
-                  )
-                ),
-              ],
-            ),
-            const SizedBox(height: 20,),
-            Container(
-              height: 250,
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.primary,
-                borderRadius: BorderRadius.circular(20)
+                height: 250,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(20)),
+              )),
+              const SizedBox(
+                width: 20,
               ),
-            )
-          ],
-        ),
+              Expanded(
+                  child: Container(
+                height: 250,
+                decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(20)),
+              )),
+            ],
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Container(
+            height: 250,
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primary,
+                borderRadius: BorderRadius.circular(20)),
+          )
+        ],
       ),
     );
   }
