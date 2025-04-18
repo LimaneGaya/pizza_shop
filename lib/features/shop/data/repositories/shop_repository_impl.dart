@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:food_delivery/features/shop/data/datasources/shop_remote_datasource.dart';
 import 'package:food_delivery/features/shop/data/models/macro_model.dart';
 import 'package:food_delivery/features/shop/data/models/pizza_model.dart';
@@ -23,7 +24,8 @@ class ShopRepositoryImpl implements ShopRepository {
       }
       return list;
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
+      
       rethrow;
     }
   }
@@ -58,7 +60,7 @@ class ShopRepositoryImpl implements ShopRepository {
                 calories: calories, proteins: proteins, fat: fat, carbs: carbs),
           ));
     } catch (e) {
-      print(e);
+      if (kDebugMode) print(e);
       rethrow;
     }
   }

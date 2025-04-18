@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:food_delivery/core/entities/my_user.dart';
 import 'package:food_delivery/features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:food_delivery/features/auth/domain/repositories/auth_repository.dart';
@@ -30,7 +31,8 @@ class AuthRepositoryImpl implements AuthRepository {
       await setUserData(user);
       return user;
     } catch (e, _) {
-      print(e.toString());
+      if (kDebugMode) print(e.toString());
+      
       rethrow;
     }
   }

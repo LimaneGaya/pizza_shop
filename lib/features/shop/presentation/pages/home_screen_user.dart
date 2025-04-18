@@ -73,7 +73,7 @@ class HomeScreenUser extends StatelessWidget {
                                   const SizedBox(width: 8),
                                   Container(
                                     decoration: BoxDecoration(
-                                        color: Colors.green.withOpacity(0.2),
+                                        color: Colors.green.withValues(alpha: 0.2),
                                         borderRadius:
                                             BorderRadius.circular(30)),
                                     child: Padding(

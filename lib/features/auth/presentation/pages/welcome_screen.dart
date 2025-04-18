@@ -96,7 +96,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                             unselectedLabelColor: Theme.of(context)
                                 .colorScheme
                                 .surface
-                                .withOpacity(0.5),
+                                .withValues(alpha: 0.5),
                             labelColor: Theme.of(context).colorScheme.onSurface,
                             tabs: const [
                               Padding(
